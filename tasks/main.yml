@@ -1,0 +1,25 @@
+---
+
+# Playbook 実行時のOS の情報を取得する
+  - name: display os and version
+    debug : msg="OS distribution is {{ ansible_distribution }}."
+
+# Playbook 実行時に取得したOSのメジャーバージョンを表示する
+  - name: display os major version
+    debug : msg="OS major version is {{ ansible_distribution_major_version }}."
+
+# サポートするOS 以外の種類であった場合にエラーメッセージを表示する
+  - name: check os distribution
+    fail : msg="This OS is not supported."
+    when: ansible_os_family not in ['RedHat']
+
+# Playbookのデフォルト値で設定してあるOSバージョンと異なる環境の場合にエラーメッセージを表示する。
+  - name: check setup enabled
+    fail : msg="This Playbook is only for {{ zabbix40sv_OS_Version }}."
+    when:  zabbix40sv_OS_Version != ansible_os_family + ansible_distribution_major_version
+
+
+# 実行するPlaybookを選択
+  - name: run playbook
+    import_tasks: 'RedHat.yml'
+    when: zabbix40sv_OS_Version == ansible_os_family + ansible_distribution_major_version

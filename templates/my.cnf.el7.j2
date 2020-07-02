@@ -1,0 +1,25 @@
+[mysqld]
+datadir=/var/lib/mysql
+socket=/var/lib/mysql/mysql.sock
+
+symbolic-links=0
+
+character-set-server={{ VAR_Zabbix40SV_character_set_server }}
+{% if VAR_Zabbix40SV_skip_character_set_client_handshake == True %}
+skip-character-set-client-handshake
+{% endif %}
+{% if VAR_Zabbix40SV_innodb_file_per_table == True %}
+innodb_file_per_table
+{% endif %}
+innodb_log_buffer_size={{ VAR_Zabbix40SV_innodb_log_buffer_size }}
+innodb_buffer_pool_size={{ VAR_Zabbix40SV_innodb_buffer_pool_size }}
+innodb_log_file_size={{ VAR_Zabbix40SV_innodb_log_file_size }}
+innodb_log_files_in_group={{ VAR_Zabbix40SV_innodb_log_files_in_group }}
+key_buffer_size={{ VAR_Zabbix40SV_key_buffer_size }}
+max_allowed_packet={{ VAR_Zabbix40SV_max_allowed_packet }}
+
+[mysqld_safe]
+log-error=/var/log/mariadb/mariadb.log
+pid-file=/var/run/mariadb/mariadb.pid
+
+!includedir /etc/my.cnf.d

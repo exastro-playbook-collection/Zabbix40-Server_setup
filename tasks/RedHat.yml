@@ -1,0 +1,102 @@
+---
+# Zabbixサーバのセットアップ
+
+
+## MySQL(MariaDB)設定ファイルの更新
+
+  - name: setting MariaDB
+    template: src=my.cnf.el7.j2   dest=/etc/my.cnf
+
+## MySQL(MariaDB)の再起動
+
+  - name: MariaDB start
+    service: name=mariadb state=restarted
+
+## zabbixデータベースが存在するかチェック。存在しない場合は、zabbixデータベースを作成する。
+
+  - name: check the existence of zabbix database
+    shell: mysql -u root --password='{{ VAR_Zabbix40SV_DB_Root_Password }}' -e "use {{ VAR_Zabbix40SV_DBName }}" > /dev/null 2>&1
+    register: zabbix_database_check_result
+    changed_when: false
+    failed_when: false
+
+## データベース作成
+
+  - name: create a zabbix database
+    shell: mysql -u root --password='{{ VAR_Zabbix40SV_DB_Root_Password }}' -e "create database {{ VAR_Zabbix40SV_DBName }} character set utf8 collate utf8_bin;"
+    when: zabbix_database_check_result.rc == 1
+
+# zabbix ユーザが存在するかチェック。存在しない場合は、zabbixユーザの追加を行う。
+
+  - name: check the existence of zabbix user
+    shell: mysql -N -s -u root --password='{{ VAR_Zabbix40SV_DB_Root_Password }}' -e "select count(*) from mysql.user where User='{{ VAR_Zabbix40SV_DBUser }}';"
+    register: zabbix_user_check_result
+    changed_when: false
+    failed_when: false
+
+## データベースユーザの作成
+
+  - name: add a zabbix user
+    shell: mysql -u root  --password='{{ VAR_Zabbix40SV_DB_Root_Password }}' -e "grant all privileges on {{ VAR_Zabbix40SV_DBName }}.* to {{ VAR_Zabbix40SV_DBUser }}@localhost identified by '{{ VAR_Zabbix40SV_DBPassword }}';"
+    when: zabbix_user_check_result.stdout|int == 0
+
+## Zabbixバージョンの取得
+
+  - name: get zabbix-server-mysql version
+    shell: rpm -q zabbix-server-mysql | cut -d'-' -f4
+    register: zabbixsv_version
+    args:
+      warn: no
+    changed_when: false
+    failed_when: false
+
+## zabbixデータベース内のテーブル数をチェック。0だったらcreate.sqlを実行する。
+
+  - name: check that zabbix database is empty
+    shell: mysql -N -s -u root  --password='{{ VAR_Zabbix40SV_DB_Root_Password }}' -e "select count(*) from information_schema.tables where table_schema='{{ VAR_Zabbix40SV_DBName }}';"
+    register: zabbix_database_table_check_result
+    changed_when: false
+    failed_when: false
+
+## SQLデータのインポート
+
+  - name: setup zabbix database
+    shell: zcat create.sql.gz | mysql -u {{ VAR_Zabbix40SV_DBUser }} --password='{{ VAR_Zabbix40SV_DBPassword }}' {{ VAR_Zabbix40SV_DBName }}
+    args:
+      chdir: /usr/share/doc/zabbix-server-mysql-{{ zabbixsv_version.stdout }}
+    when:
+      - zabbix_database_table_check_result.stdout|int == 0
+
+## MySQL(MariaDB)の停止
+
+  - name: MariaDB stop
+    service: name=mariadb state=stopped
+
+## Zabbix設定ファイル
+
+  - name: setting zabbix_server.conf
+    template: src=zabbix_server.conf.j2   dest=/etc/zabbix/zabbix_server.conf
+
+## WEBインターフェイス設定（PHP環境変数）
+
+  - name: setting zabbix.conf.php
+    template: src=zabbix.conf.php.j2 dest=/etc/zabbix/web/zabbix.conf.php
+
+## WEBインターフェイス設定（Apache連携）
+
+  - name: setting zabbix.conf
+    template: src=zabbix.conf.el7.j2 dest=/etc/httpd/conf.d/zabbix.conf
+
+## ログローテート設定
+
+  - name: change logrotate
+    template: src=zabbix_server.j2   dest=/etc/logrotate.d/zabbix-server
+    when: VAR_Zabbix40SV_LogType is undefined or VAR_Zabbix40SV_LogType == "file" or (not VAR_Zabbix40SV_LogType)
+
+  - name: /var/run/zabbix permission change
+    file: path=/var/run/zabbix state=directory mode=0777
+    when: zabbix40SV_chmod == True
+
+  - name: /var/log/zabbix permission change
+    file: path=/var/log/zabbix state=directory mode=0777
+    when: zabbix40SV_chmod == True

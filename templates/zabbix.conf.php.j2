@@ -1,0 +1,21 @@
+<?php
+// Zabbix GUI configuration file
+global $DB;
+
+$DB['TYPE']     = 'MYSQL';
+$DB['SERVER']   = 'localhost';
+$DB['PORT']     = '0';
+$DB['DATABASE'] = '{{ VAR_Zabbix40SV_DBName }}';
+$DB['USER']     = '{{ VAR_Zabbix40SV_DBUser }}';
+$DB['PASSWORD'] = '{{ VAR_Zabbix40SV_DBPassword }}';
+
+// SCHEMA is relevant only for IBM_DB2 database
+$DB['SCHEMA'] = '';
+
+$ZBX_SERVER      = '{{ VAR_Zabbix40SV_ZBX_SERVER }}';
+$ZBX_SERVER_PORT = '{{ VAR_Zabbix40SV_ZBX_SERVER_PORT }}';
+$ZBX_SERVER_NAME = '{{ VAR_Zabbix40SV_ZBX_SERVER_NAME }}';
+
+$IMAGE_FORMAT_DEFAULT = IMAGE_FORMAT_PNG;
+?>
+

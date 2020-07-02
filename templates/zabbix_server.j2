@@ -1,0 +1,9 @@
+{{ VAR_Zabbix40SV_LogFile }} {
+        {{ VAR_Zabbix40SV_RotateTiming }}
+        rotate {{ VAR_Zabbix40SV_RotateCount }}
+        compress
+        delaycompress
+        missingok
+        notifempty
+        create 0666 zabbix zabbix
+}

@@ -1,0 +1,130 @@
+###  vars file for ansible-zabbix-server
+
+## setting my.cnf
+
+  VAR_Zabbix40SV_skip_character_set_client_handshake: on
+  VAR_Zabbix40SV_innodb_file_per_table: on
+
+  VAR_Zabbix40SV_character_set_server: utf8
+  VAR_Zabbix40SV_innodb_log_buffer_size: 16M
+  VAR_Zabbix40SV_innodb_buffer_pool_size: 1024M
+  VAR_Zabbix40SV_innodb_log_file_size: 256M
+  VAR_Zabbix40SV_innodb_log_files_in_group: 2
+  VAR_Zabbix40SV_key_buffer_size: 200M
+  VAR_Zabbix40SV_max_allowed_packet: 16M
+
+## setting mariadb
+
+  VAR_Zabbix40SV_DB_Root_Password:
+
+## setting zabbix.conf.php
+
+  VAR_Zabbix40SV_ZBX_SERVER: localhost
+  VAR_Zabbix40SV_ZBX_SERVER_PORT: 10051
+  VAR_Zabbix40SV_ZBX_SERVER_NAME:
+
+## setting zabbix.conf
+
+  VAR_Zabbix40SV_max_execution_time: 600
+  VAR_Zabbix40SV_memory_limit: 256M
+  VAR_Zabbix40SV_post_max_size: 32M
+  VAR_Zabbix40SV_upload_max_filesize: 2M
+  VAR_Zabbix40SV_max_input_time: 600
+  VAR_Zabbix40SV_always_populate_raw_post_data: -1
+  VAR_Zabbix40SV_date_timezone: Asia/Tokyo
+
+## setting logrotate
+  VAR_Zabbix40SV_RotateTiming: weekly
+  VAR_Zabbix40SV_RotateCount: 12
+
+## setting zabbix_server.conf
+
+### Default parameter
+  VAR_Zabbix40SV_DBName: zabbix
+  VAR_Zabbix40SV_DBUser: zabbix
+  VAR_Zabbix40SV_DBPassword: zabbixpass
+  VAR_Zabbix40SV_DBSocket: /var/lib/mysql/mysql.sock
+  VAR_Zabbix40SV_LogFile: /var/log/zabbix/zabbix_server.log
+  VAR_Zabbix40SV_LogFileSize: 0
+  VAR_Zabbix40SV_SocketDir: /var/run/zabbix
+  VAR_Zabbix40SV_AlertScriptsPath: /usr/lib/zabbix/alertscripts
+  VAR_Zabbix40SV_ExternalScripts: /usr/lib/zabbix/externalscripts
+  VAR_Zabbix40SV_LogSlowQueries: 3000
+
+### Optional parameter
+  VAR_Zabbix40SV_ListenPort:
+  VAR_Zabbix40SV_SourceIP:
+  VAR_Zabbix40SV_LogType:
+  VAR_Zabbix40SV_DebugLevel:
+  VAR_Zabbix40SV_DBHost:
+  VAR_Zabbix40SV_DBSchema:
+  VAR_Zabbix40SV_DBPort:
+  VAR_Zabbix40SV_HistoryStorageURL:
+  VAR_Zabbix40SV_HistoryStorageTypes:
+  VAR_Zabbix40SV_HistoryStorageDateIndex:
+  VAR_Zabbix40SV_ExportDir:
+  VAR_Zabbix40SV_ExportFileSize:
+  VAR_Zabbix40SV_StartPollers:
+  VAR_Zabbix40SV_StartIPMIPollers:
+  VAR_Zabbix40SV_StartPreprocessors:
+  VAR_Zabbix40SV_StartPollersUnreachable:
+  VAR_Zabbix40SV_StartTrappers:
+  VAR_Zabbix40SV_StartPingers:
+  VAR_Zabbix40SV_StartDiscoverers:
+  VAR_Zabbix40SV_StartHTTPPollers:
+  VAR_Zabbix40SV_StartTimers:
+  VAR_Zabbix40SV_StartEscalators:
+  VAR_Zabbix40SV_StartAlerters:
+  VAR_Zabbix40SV_JavaGateway:
+  VAR_Zabbix40SV_JavaGatewayPort:
+  VAR_Zabbix40SV_StartJavaPollers:
+  VAR_Zabbix40SV_StartVMwareCollectors:
+  VAR_Zabbix40SV_VMwareFrequency:
+  VAR_Zabbix40SV_VMwarePerfFrequency:
+  VAR_Zabbix40SV_VMwareCacheSize:
+  VAR_Zabbix40SV_VMwareTimeout:
+  VAR_Zabbix40SV_SNMPTrapperFile:
+  VAR_Zabbix40SV_StartSNMPTrapper:
+  VAR_Zabbix40SV_ListenIP:
+  VAR_Zabbix40SV_HousekeepingFrequency:
+  VAR_Zabbix40SV_MaxHousekeeperDelete:
+  VAR_Zabbix40SV_CacheSize:
+  VAR_Zabbix40SV_CacheUpdateFrequency:
+  VAR_Zabbix40SV_StartDBSyncers:
+  VAR_Zabbix40SV_HistoryCacheSize:
+  VAR_Zabbix40SV_HistoryIndexCacheSize:
+  VAR_Zabbix40SV_TrendCacheSize:
+  VAR_Zabbix40SV_ValueCacheSize:
+  VAR_Zabbix40SV_Timeout:
+  VAR_Zabbix40SV_TrapperTimeout:
+  VAR_Zabbix40SV_UnreachablePeriod:
+  VAR_Zabbix40SV_UnavailableDelay:
+  VAR_Zabbix40SV_UnreachableDelay:
+  VAR_Zabbix40SV_FpingLocation:
+  VAR_Zabbix40SV_Fping6Location:
+  VAR_Zabbix40SV_SSHKeyLocation:
+  VAR_Zabbix40SV_TmpDir:
+  VAR_Zabbix40SV_StartProxyPollers:
+  VAR_Zabbix40SV_ProxyConfigFrequency:
+  VAR_Zabbix40SV_ProxyDataFrequency:
+  VAR_Zabbix40SV_AllowRoot:
+  VAR_Zabbix40SV_User:
+  VAR_Zabbix40SV_SSLCertLocation:
+  VAR_Zabbix40SV_SSLKeyLocation:
+  VAR_Zabbix40SV_SSLCALocation:
+  VAR_Zabbix40SV_LoadModulePath:
+  VAR_Zabbix40SV_TLSCAFile:
+  VAR_Zabbix40SV_TLSCRLFile:
+  VAR_Zabbix40SV_TLSCertFile:
+  VAR_Zabbix40SV_TLSKeyFile:
+
+### Multiple Parameters
+  VAR_Zabbix40SV_Include:
+  VAR_Zabbix40SV_LoadModule:
+
+## flag for permission change
+  zabbix40SV_chmod : False              # False or True
+
+## OS and version
+
+  zabbix40sv_OS_Version: RedHat7

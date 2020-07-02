@@ -1,0 +1,42 @@
+#
+# Zabbix monitoring system php web frontend
+#
+
+Alias /zabbix /usr/share/zabbix
+
+<Directory "/usr/share/zabbix">
+    Options FollowSymLinks
+    AllowOverride None
+    Require all granted
+
+    <IfModule mod_php5.c>
+        php_value max_execution_time {{ VAR_Zabbix40SV_max_execution_time }}
+        php_value memory_limit {{ VAR_Zabbix40SV_memory_limit }}
+        php_value post_max_size {{ VAR_Zabbix40SV_post_max_size }}
+        php_value upload_max_filesize {{ VAR_Zabbix40SV_upload_max_filesize }}
+        php_value max_input_time {{ VAR_Zabbix40SV_max_input_time }}
+        php_value always_populate_raw_post_data {{ VAR_Zabbix40SV_always_populate_raw_post_data }}
+        php_value date.timezone {{ VAR_Zabbix40SV_date_timezone }}
+    </IfModule>
+</Directory>
+
+<Directory "/usr/share/zabbix/conf">
+    Require all denied
+</Directory>
+
+<Directory "/usr/share/zabbix/app">
+    Require all denied
+</Directory>
+
+<Directory "/usr/share/zabbix/include">
+    Require all denied
+</Directory>
+
+<Directory "/usr/share/zabbix/local">
+    Require all denied
+</Directory>
+
+<Location /server-status>
+    SetHandler server-status
+    Require local
+</Location>
